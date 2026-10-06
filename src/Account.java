@@ -14,4 +14,22 @@ public class Account {
     public double getBalance() {
         return balance;
     }
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        } else {
+            System.out.println("Computer says no!");
+        }
+    }
+
+    public void withdraw(double amount) {
+        if (amount <= 0) {
+            System.out.println("Computer says no! Beloppet måste vara större än 0.");
+        } else if (amount > balance) {
+            System.out.println("Computer says no! Pengarna räcker inte.");
+        } else {
+            balance -= amount;
+        }
+    }
 }
