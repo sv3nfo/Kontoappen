@@ -1,49 +1,62 @@
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
         System.out.println("Kontoappen startar...");
 
-        // Testkonto
-        Account account = new Account("Kimpa", 1000.0);
-        System.out.println(account.getOwner());
-        System.out.println(account.getBalance());
-
-        account.deposit(200.0);
-        System.out.println(account.getBalance());
-
-        // Negativt belopp = nekas, saldot = oförändrat
-        account.deposit(-100.0);
-        System.out.println(account.getBalance());
-
-        account.withdraw(200.0);
-        System.out.println(account.getBalance());
-
-        // För stort uttag = nekas, saldot = oförändrat
-        account.withdraw(2000.0);
-        System.out.println(account.getBalance());
-
         // Registret skapar kontona och håller dem i sin lista
         AccountRegister register = new AccountRegister();
-        register.createAccount("Kimpa", 1000.0);
-        register.createAccount("Bosse", 2000.0);
-        register.printAll();
-
-        // Sökningen returnerar kontot (Kimpa), eller null om inget matchar
-        Account found = register.findAccount("Kimpa");
-
-        // found är null om kontot saknas - då ska kontot inte användas
-        if (found != null) {
-            System.out.println(found.getOwner() + ": " + found.getBalance());
-        } else {
-            System.out.println("Kontot finns inte.");
+        Scanner scanner = new Scanner(System.in);
+        int choice = 0;
+        while (choice != 5) {
+            System.out.println("1. Skapa konto");
+            System.out.println("2. Lista konton");
+            System.out.println("3. Sätt in pengar");
+            System.out.println("4. Ta ut pengar");
+            System.out.println("5. Avsluta");
+            System.out.println("Val: ");
+            choice = scanner.nextInt();
+            if (choice == 1) {
+                scanner.nextLine();
+                System.out.println("Ägare: ");
+                String owner = scanner.nextLine();
+                System.out.print("Startbelopp: ");
+                double startBalance = scanner.nextDouble();
+                register.createAccount(owner, startBalance);
+            } else if (choice == 2) {
+                register.printAll();
+            } else if (choice == 3) {
+                scanner.nextLine();
+                System.out.print("Ägare: ");
+                String owner = scanner.nextLine();
+                Account found = register.findAccount(owner);
+                if (found != null) {
+                    System.out.print("Belopp: ");
+                    double amount = scanner.nextDouble();
+                    found.deposit(amount);
+                    System.out.println("Saldo: " + found.getBalance());
+                } else {
+                    System.out.println("Konto saknas.");
+                }
+            } else if (choice == 4) {
+                scanner.nextLine();
+                System.out.print("Ägare: ");
+                String owner = scanner.nextLine();
+                Account found = register.findAccount(owner);
+                if (found != null) {
+                    System.out.print("Belopp: ");
+                    double amount = scanner.nextDouble();
+                    found.withdraw(amount);
+                    System.out.println("Saldo: " + found.getBalance());
+                } else {
+                    System.out.println("Konto saknas.");
+                }
+            } else if (choice == 5) {
+                System.out.println("Avslutar...");
+            } else {
+                System.out.println("Ogiltigt val. Försök igen.");
+            }
         }
-
-        // Samma variabel används igen, men för ett namn som inte finns
-        found = register.findAccount("Saknas");
-
-        if (found != null) {
-            System.out.println(found.getOwner() + ": " + found.getBalance());
-        } else {
-            System.out.println("Kontot finns inte.");
-        }
+        System.out.println("Hej då.");
     }
 }
